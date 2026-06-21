@@ -66,18 +66,22 @@ const seedDB = async () => {
     const createdModules = await Module.insertMany(modulesData);
     console.log('Inserted Modules');
 
-    // Create a demo user for the resources
+    // Create the Master Admin account
     await mongoose.connection.collection('users').deleteMany({});
+    const bcrypt = require('bcrypt');
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash('admin1234', salt);
+
     const demoUser = await mongoose.connection.collection('users').insertOne({
-      name: 'System Admin',
-      email: 'admin@ruh.ac.lk',
-      passwordHash: 'hashed', // Not real
+      name: 'Master Admin',
+      email: 'admin',
+      passwordHash: passwordHash,
       role: 'admin',
-      points: 50,
+      points: 1000,
       createdAt: new Date(),
       updatedAt: new Date()
     });
-    console.log('Inserted Demo User');
+    console.log('Inserted Master Admin Account (admin / admin1234)');
 
     // Create sample resources for EE1301
     const ee1301 = createdModules.find(m => m.code === 'EE1301');
