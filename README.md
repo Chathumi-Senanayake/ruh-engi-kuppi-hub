@@ -15,24 +15,23 @@ RUHEngiKuppiHub is a modern, full-stack web application designed to act as a cen
 
 ## Architectural Diagram
 
-```mermaid
-graph TD;
+
     Client[Web Browser Client] -->|HTTPS Requests| Frontend;
     
     subgraph Vercel [Frontend Deployment]
-        Frontend[React + Vite Frontend\n(TailwindCSS UI)]
+       Frontend[React + Vite Frontend\n(TailwindCSS UI)]
     end
 
     Frontend <-->|REST API via Axios| Backend;
 
     subgraph Render [Backend Deployment]
-        Backend[Node.js + Express Backend\n(TypeScript)]
+        Backend[Node.js + Express Backend and (TypeScript)]
     end
 
-    Backend <-->|Mongoose ODR| DB[(MongoDB Atlas\nCloud Database)];
-    Backend <-->|@google/genai SDK| Gemini[Google Gemini API\n(gemini-2.5-flash)];
-    Backend <-->|Multer SDK| Cloudinary[Cloudinary\n(File Storage)];
-```
+    Backend <-->|Mongoose ODR| DB[(MongoDB Atlas and Cloud Database)];
+    Backend <-->|@google/genai SDK| Gemini[Google Gemini API and(gemini-2.5-flash)];
+    Backend <-->|Multer SDK| Cloudinary[Cloudinary and (File Storage)];
+
 
 ---
 
