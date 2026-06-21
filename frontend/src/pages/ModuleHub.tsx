@@ -252,8 +252,8 @@ const ModuleHub = () => {
                     try {
                       const res = await api.post('/ai/study-guide', { moduleCode: module.code });
                       setStudyGuide(res.data.content);
-                    } catch (e) {
-                      setStudyGuide('Failed to generate study guide. Please check your Gemini API key.');
+                    } catch (e: any) {
+                      setStudyGuide(e.response?.data?.message || 'Failed to generate study guide. Please check your Gemini API key.');
                     }
                   }}
                   className="px-4 py-2 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 w-full mb-4"
@@ -287,8 +287,8 @@ const ModuleHub = () => {
                     try {
                       const res = await api.post('/ai/chat', { moduleCode: module.code, message: chatInput, history: chatMessages });
                       setChatMessages(prev => [...prev, { role: 'ai', content: res.data.reply }]);
-                    } catch (e) {
-                      setChatMessages(prev => [...prev, { role: 'ai', content: 'Error: Could not reach AI. Check your Gemini API key.' }]);
+                    } catch (e: any) {
+                      setChatMessages(prev => [...prev, { role: 'ai', content: e.response?.data?.message || 'Error: Could not reach AI. Check your Gemini API key.' }]);
                     }
                   }}
                   className="flex gap-2"

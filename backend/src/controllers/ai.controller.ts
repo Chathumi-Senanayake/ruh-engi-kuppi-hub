@@ -25,7 +25,7 @@ export const generateStudyGuide = async (req: Request, res: Response) => {
       { 
         headers: { 
           'Content-Type': 'application/json',
-          'x-goog-api-key': process.env.GEMINI_API_KEY
+          'x-goog-api-key': process.env.GEMINI_API_KEY?.trim()
         } 
       }
     );
@@ -34,7 +34,7 @@ export const generateStudyGuide = async (req: Request, res: Response) => {
     res.status(200).json({ content: text });
   } catch (error: any) {
     console.error('AI Error:', error.response?.data || error.message);
-    res.status(500).json({ message: 'Failed to generate study guide', error: error.response?.data || error.message });
+    res.status(500).json({ message: error.response?.data?.error?.message || 'Failed to generate study guide', details: error.response?.data || error.message });
   }
 };
 
@@ -55,7 +55,7 @@ export const chat = async (req: Request, res: Response) => {
       { 
         headers: { 
           'Content-Type': 'application/json',
-          'x-goog-api-key': process.env.GEMINI_API_KEY
+          'x-goog-api-key': process.env.GEMINI_API_KEY?.trim()
         } 
       }
     );
@@ -64,6 +64,6 @@ export const chat = async (req: Request, res: Response) => {
     res.status(200).json({ reply });
   } catch (error: any) {
     console.error('AI Error:', error.response?.data || error.message);
-    res.status(500).json({ message: 'Chat failed', error: error.response?.data || error.message });
+    res.status(500).json({ message: error.response?.data?.error?.message || 'Chat failed', details: error.response?.data || error.message });
   }
 };
