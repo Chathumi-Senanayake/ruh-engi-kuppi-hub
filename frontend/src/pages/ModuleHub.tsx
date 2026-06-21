@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FormEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api';
 import { Video, BookOpen, FileText, HelpCircle, Bot, Upload, X, Edit, Trash2 } from 'lucide-react';
@@ -59,7 +59,7 @@ const ModuleHub = () => {
     }
   };
 
-  const handleUpload = async (e: FormEvent<HTMLFormElement>) => {
+  const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!token) {
       alert("Please login to upload resources.");
@@ -100,7 +100,7 @@ const ModuleHub = () => {
     }
   };
 
-  const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!token || !editingResource) return;
     const formData = new FormData(e.currentTarget);

@@ -1,6 +1,5 @@
-import React from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { Home, Search, Library, User, LogOut, LogIn } from 'lucide-react';
+import { Home, Search, Library, LogOut, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const MainLayout = () => {

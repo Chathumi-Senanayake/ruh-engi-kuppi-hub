@@ -1,48 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Search, Video, Award, Users } from 'lucide-react';
-import api from '../api';
-
-interface Department {
-  _id: string;
-  name: string;
-  code: string;
-  description: string;
-}
-
-interface Module {
-  _id: string;
-  code: string;
-  name: string;
-  department: Department;
-  year: number;
-  semester: number;
-  description: string;
-}
+import { BookOpen, Video, Award, Users } from 'lucide-react';
 
 const Home = () => {
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [modules, setModules] = useState<Module[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        const [deptRes, modRes] = await Promise.all([
-          api.get('/modules/departments'),
-          api.get('/modules'),
-        ]);
-        setDepartments(deptRes.data);
-        setModules(modRes.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchInitialData();
-  }, []);
 
   return (
     <div className="max-w-5xl mx-auto py-12 relative z-10 animate-fade-in">
