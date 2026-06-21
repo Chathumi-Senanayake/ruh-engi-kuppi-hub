@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.chat = exports.generateStudyGuide = void 0;
-const axios_1 = __importDefault(require("axios"));
+const genai_1 = require("@google/genai");
 const Module_1 = __importDefault(require("../models/Module"));
 const generateStudyGuide = async (req, res) => {
     try {
@@ -18,19 +18,17 @@ const generateStudyGuide = async (req, res) => {
             res.status(500).json({ message: 'Gemini API Key is missing in backend .env file.' });
             return;
         }
+        const ai = new genai_1.GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY.trim() });
         const prompt = `You are an expert engineering tutor. Create a well-structured study guide for an engineering module called "${module.name}" (Code: ${module.code}). Include key concepts, learning objectives, and a short practice question. Keep it concise and use markdown formatting.`;
-        const response = await axios_1.default.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, { contents: [{ parts: [{ text: prompt }] }] }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'x-goog-api-key': process.env.GEMINI_API_KEY
-            }
+        const response = await ai.models.generateContent({
+            model: 'gemini-1.5-flash',
+            contents: prompt,
         });
-        const text = response.data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated.';
-        res.status(200).json({ content: text });
+        res.status(200).json({ content: response.text || 'No response generated.' });
     }
     catch (error) {
-        console.error('AI Error:', error.response?.data || error.message);
-        res.status(500).json({ message: 'Failed to generate study guide', error: error.response?.data || error.message });
+        console.error('AI Error:', error);
+        res.status(500).json({ message: error.message || 'Failed to generate study guide', details: error.toString() });
     }
 };
 exports.generateStudyGuide = generateStudyGuide;
@@ -41,19 +39,17 @@ const chat = async (req, res) => {
             res.status(500).json({ message: 'Gemini API Key is missing in backend .env file.' });
             return;
         }
+        const ai = new genai_1.GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY.trim() });
         const prompt = `You are a helpful teaching assistant for the engineering module ${moduleCode}. Answer the following student question concisely: "${message}"`;
-        const response = await axios_1.default.post(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, { contents: [{ parts: [{ text: prompt }] }] }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'x-goog-api-key': process.env.GEMINI_API_KEY
-            }
+        const response = await ai.models.generateContent({
+            model: 'gemini-1.5-flash',
+            contents: prompt,
         });
-        const reply = response.data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated.';
-        res.status(200).json({ reply });
+        res.status(200).json({ reply: response.text || 'No response generated.' });
     }
     catch (error) {
-        console.error('AI Error:', error.response?.data || error.message);
-        res.status(500).json({ message: 'Chat failed', error: error.response?.data || error.message });
+        console.error('AI Error:', error);
+        res.status(500).json({ message: error.message || 'Chat failed', details: error.toString() });
     }
 };
 exports.chat = chat;
