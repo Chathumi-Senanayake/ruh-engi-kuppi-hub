@@ -20,7 +20,7 @@ export const generateStudyGuide = async (req: Request, res: Response) => {
     const prompt = `You are an expert engineering tutor. Create a well-structured study guide for an engineering module called "${module.name}" (Code: ${module.code}). Include key concepts, learning objectives, and a short practice question. Keep it concise and use markdown formatting.`;
 
     const response = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`,
       { contents: [{ parts: [{ text: prompt }] }] },
       { 
         headers: { 
@@ -50,7 +50,7 @@ export const chat = async (req: Request, res: Response) => {
     const prompt = `You are a helpful teaching assistant for the engineering module ${moduleCode}. Answer the following student question concisely: "${message}"`;
 
     const response = await axios.post(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`,
       { contents: [{ parts: [{ text: prompt }] }] },
       { 
         headers: { 
