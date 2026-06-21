@@ -27,6 +27,17 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'RUHEngiKuppiHub API is running' });
 });
 
+// Temporary Database Seeding Route
+app.get('/api/seed-database', (req, res) => {
+  try {
+    const { execSync } = require('child_process');
+    execSync('node dist/seeder.js');
+    res.status(200).json({ message: 'Database successfully seeded! You can now log in with admin / admin1234.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to seed database', error: String(error) });
+  }
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/modules', moduleRoutes);
 app.use('/api/resources', resourceRoutes);
