@@ -21,7 +21,7 @@ export const generateStudyGuide = async (req: Request, res: Response) => {
     const prompt = `You are an expert engineering tutor. Create a well-structured study guide for an engineering module called "${module.name}" (Code: ${module.code}). Include key concepts, learning objectives, and a short practice question. Keep it concise and use markdown formatting.`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.5-flash',
       contents: prompt,
     });
 
@@ -45,7 +45,7 @@ export const chat = async (req: Request, res: Response) => {
     const prompt = `You are a helpful teaching assistant for the engineering module ${moduleCode}. Answer the following student question concisely: "${message}"`;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.5-flash',
       contents: prompt,
     });
 
